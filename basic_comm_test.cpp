@@ -1,7 +1,7 @@
 /*
  * basic_comm_test.cpp
  * Author: Jonah Miller (jonah.maxwell.miller@gmail.com)
- * Time-stamp: <2017-02-21 15:17:12 (jmiller)>
+ * Time-stamp: <2017-02-21 15:25:56 (jmiller)>
  *
  * This is a small script to test how the MPI infrastructure is
  * working. We perform An MPI broadcast, reduce, and ask each
@@ -40,15 +40,16 @@ int main(int argc, char **argv) {
   MPI_Barrier(MPI_COMM_WORLD);
 
   // Output hello
-  printf("Hello from %s: rank %d of %d.\n",
-	 hostname.data(),rank,size);
+  printf("\tHello from %s: rank %d of %d.\n",
+	 hostname.data(),rank,size-1);
   // In realistic programs, avoid barrier as much as possible!
-  MPI_Barrier(MPI_COMM_WORLD);
 
   // Test communication
   int to_sum = 1;
   int total = 0;
   int expected_total = to_sum*size;
+  MPI_Barrier(MPI_COMM_WORLD);
+
   if (rank == HEAD) {
     printf("Now performing reduce operation.\n");
     printf("We will sum up the integer %d over all ranks.\n",
